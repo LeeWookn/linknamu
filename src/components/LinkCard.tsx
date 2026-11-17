@@ -24,11 +24,11 @@ export default function LinkCard({ link }: { link: LinkItem }) {
       target="_blank"
       rel="noopener noreferrer"
       onClick={() => recordClick(link.id)}
-      className="flex min-h-[3.5rem] w-full flex-col items-center justify-center rounded-xl border-2 border-gray-900 bg-white px-5 py-3 text-center transition hover:-translate-y-0.5 hover:shadow-md active:scale-[0.98] dark:border-gray-100 dark:bg-gray-800"
+      className="flex min-h-[3.75rem] w-full flex-col items-center justify-center rounded-2xl border border-white/70 bg-white/45 px-6 py-4 text-center shadow-[0_6px_24px_-12px_rgba(150,85,45,0.35)] backdrop-blur-md transition duration-300 ease-out hover:-translate-y-px hover:bg-white/65 hover:shadow-[0_10px_28px_-12px_rgba(150,85,45,0.45)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/70 active:translate-y-0 motion-reduce:transition-none motion-reduce:hover:translate-y-0 dark:border-white/10 dark:bg-white/[0.06] dark:shadow-[0_6px_24px_-12px_rgba(0,0,0,0.6)] dark:hover:bg-white/[0.1]"
     >
-      <span className="font-semibold">{link.title}</span>
+      <span className="text-[15px] font-semibold tracking-tight">{link.title}</span>
       {link.description && (
-        <span className="mt-0.5 text-xs text-gray-500 dark:text-gray-400">
+        <span className="mt-0.5 text-xs text-stone-500 dark:text-stone-400">
           {link.description}
         </span>
       )}
