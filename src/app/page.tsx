@@ -1,4 +1,4 @@
-import LinkCard from "@/components/LinkCard";
+import LinkList from "@/components/LinkList";
 import ProfileHeader from "@/components/ProfileHeader";
 import ThemeToggle from "@/components/ThemeToggle";
 import { links, profile } from "@/data/profile";
@@ -12,13 +12,7 @@ export default function Home() {
 
       <ProfileHeader profile={profile} />
 
-      <ul className="mt-12 flex w-full flex-col gap-4">
-        {links.map((link) => (
-          <li key={link.id}>
-            <LinkCard link={link} />
-          </li>
-        ))}
-      </ul>
+      <LinkList links={links} />
 
       <hr className="mt-14 w-10 border-stone-400/40 dark:border-stone-500/40" />
     </main>

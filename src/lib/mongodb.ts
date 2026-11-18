@@ -9,18 +9,27 @@ declare global {
   var _mongoClientPromise: Promise<MongoClient> | undefined;
 }
 
+function connect(uri: string): Promise<MongoClient> {
+  // DB에 닿지 않을 때 요청이 30초씩 붙잡히지 않도록 짧게 포기
+  const promise = new MongoClient(uri, { serverSelectionTimeoutMS: 5000 }).connect();
+  // 연결에 실패한 Promise를 캐시에 남겨 두면 서버 재시작 전까지 계속 실패하므로 비워서 다음 요청에 재시도
+  promise.catch(() => {
+    if (global._mongoClientPromise === promise) global._mongoClientPromise = undefined;
+    if (clientPromise === promise) clientPromise = undefined;
+  });
+  return promise;
+}
+
 /** MONGODB_URI가 없으면 null을 반환합니다 (로컬에서 DB 없이도 페이지는 동작). */
 export function getMongoClient(): Promise<MongoClient> | null {
   if (!uri) return null;
 
   if (process.env.NODE_ENV === "development") {
-    if (!global._mongoClientPromise) {
-      global._mongoClientPromise = new MongoClient(uri).connect();
-    }
+    if (!global._mongoClientPromise) global._mongoClientPromise = connect(uri);
     return global._mongoClientPromise;
   }
 
-  if (!clientPromise) clientPromise = new MongoClient(uri).connect();
+  if (!clientPromise) clientPromise = connect(uri);
   return clientPromise;
 }
 

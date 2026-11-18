@@ -17,14 +17,23 @@ function recordClick(id: string) {
   }
 }
 
-export default function LinkCard({ link }: { link: LinkItem }) {
+type Props = {
+  link: LinkItem;
+  count: number;
+  onClick?: (id: string) => void;
+};
+
+export default function LinkCard({ link, count, onClick }: Props) {
   return (
     <a
       href={link.url}
       target="_blank"
       rel="noopener noreferrer"
-      onClick={() => recordClick(link.id)}
-      className="flex min-h-[3.75rem] w-full flex-col items-center justify-center rounded-2xl border border-white/70 bg-white/45 px-6 py-4 text-center shadow-[0_6px_24px_-12px_rgba(150,85,45,0.35)] backdrop-blur-md transition duration-300 ease-out hover:-translate-y-px hover:bg-white/65 hover:shadow-[0_10px_28px_-12px_rgba(150,85,45,0.45)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/70 active:translate-y-0 motion-reduce:transition-none motion-reduce:hover:translate-y-0 dark:border-white/10 dark:bg-white/[0.06] dark:shadow-[0_6px_24px_-12px_rgba(0,0,0,0.6)] dark:hover:bg-white/[0.1]"
+      onClick={() => {
+        recordClick(link.id);
+        onClick?.(link.id);
+      }}
+      className="relative flex min-h-[3.75rem] w-full flex-col items-center justify-center rounded-2xl border border-white/70 bg-white/45 px-16 py-4 text-center shadow-[0_6px_24px_-12px_rgba(150,85,45,0.35)] backdrop-blur-md transition duration-300 ease-out hover:-translate-y-px hover:bg-white/65 hover:shadow-[0_10px_28px_-12px_rgba(150,85,45,0.45)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/70 active:translate-y-0 motion-reduce:transition-none motion-reduce:hover:translate-y-0 dark:border-white/10 dark:bg-white/[0.06] dark:shadow-[0_6px_24px_-12px_rgba(0,0,0,0.6)] dark:hover:bg-white/[0.1]"
     >
       <span className="text-[15px] font-semibold tracking-tight">{link.title}</span>
       {link.description && (
@@ -32,6 +41,10 @@ export default function LinkCard({ link }: { link: LinkItem }) {
           {link.description}
         </span>
       )}
+      {/* 제목은 가운데 유지, 클릭 수는 오른쪽에 작게 */}
+      <span className="absolute right-5 top-1/2 -translate-y-1/2 text-xs tabular-nums text-stone-400 dark:text-stone-500">
+        {count.toLocaleString("ko-KR")}회
+      </span>
     </a>
   );
 }
